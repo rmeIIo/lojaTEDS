@@ -3025,19 +3025,19 @@
     ]
   },
   "packageFolders": {
-    "/home/roger/.nuget/packages/": {}
+    "C:\\Users\\autologon\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/roger/Documentos/loja/loja.csproj",
+      "projectUniqueName": "C:\\Users\\autologon\\lojaTEDS\\loja.csproj",
       "projectName": "loja",
-      "projectPath": "/home/roger/Documentos/loja/loja.csproj",
-      "packagesPath": "/home/roger/.nuget/packages/",
-      "outputPath": "/home/roger/Documentos/loja/obj/",
+      "projectPath": "C:\\Users\\autologon\\lojaTEDS\\loja.csproj",
+      "packagesPath": "C:\\Users\\autologon\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\autologon\\lojaTEDS\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/home/roger/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\autologon\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
@@ -3055,6 +3055,11 @@
         "warnAsError": [
           "NU1605"
         ]
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
       }
     },
     "frameworks": {
@@ -3111,7 +3116,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/8.0.105/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

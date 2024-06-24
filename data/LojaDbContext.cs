@@ -14,6 +14,8 @@ namespace Loja.Data
         public DbSet<Venda> Vendas { get; set; }
         public DbSet<Deposito> Depositos { get; set; }
         public DbSet<ProdutoDeposito> ProdutosDeposito { get; set; }
+        public DbSet<Servico> Servicos {get; set;}
+        public DbSet<Contrato> Contratos {get; set;}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

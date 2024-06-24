@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using Loja.Data;
 using loja.models;
 using loja.services;
+using Microsoft.AspNetCore.Authorization;
+using Loja.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +22,8 @@ builder.Services.AddScoped<ProductService>();
 builder.Services.AddScoped<FornecedorService>();
 builder.Services.AddScoped<VendaService>(); 
 builder.Services.AddScoped<DepositoService>(); 
+builder.Services.AddScoped<ServicoService>();
+builder.Services.AddScoped<ContratoService>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -127,6 +131,47 @@ app.MapGet("/rotaSegura", async (HttpContext context) =>
     }
 });
 
+// Endpoints de Serviços
+app.MapPost("/servicos", async (Servico servico, ServicoService servicoService) =>
+{
+    await servicoService.AddServicoAsync(servico);
+    return Results.Created($"/servicos/{servico.Id}", servico);
+}); 
+
+app.MapPut("/servicos/{id}", async (int id, Servico servico, ServicoService servicoService) =>
+{
+    var existingServico = await servicoService.GetServicoByIdAsync(id);
+    if (existingServico == null)
+    {
+        return Results.NotFound($"Serviço com ID {id} não encontrado.");
+    }
+
+    existingServico.Nome = servico.Nome;
+    existingServico.Preco = servico.Preco;
+    existingServico.Status = servico.Status;
+
+    await servicoService.UpdateServicoAsync(existingServico);
+
+    return Results.Ok(existingServico);
+});
+
+// Endpoint para consultar um serviço específico por ID (autenticado)
+app.MapGet("/servicos/{id}", async (int id, ServicoService servicoService) =>
+{
+    var servico = await servicoService.GetServicoByIdAsync(id);
+    if (servico == null)
+    {
+        return Results.NotFound($"Serviço com ID {id} não encontrado.");
+    }
+    return Results.Ok(servico);
+});
+
+app.MapPost("/contratos", async (Contrato contrato, ContratoService contratoService) =>
+{
+    await contratoService.AddContratoAsync(contrato);
+    return Results.Created($"/contratos/{contrato.Id}", contrato);
+});
+
 // Endpoints de Clientes
 app.MapPost("/clientes", async (Cliente cliente, ClienteService clienteService) =>
 {
@@ -148,6 +193,21 @@ app.MapGet("/clientes/{id}", async (int id, ClienteService clienteService) =>
         return Results.NotFound($"Cliente with ID {id} not found.");
     }
     return Results.Ok(cliente);
+});
+
+// Endpoint para consultar todos os serviços contratados por um cliente específico
+app.MapGet("/clientes/{clienteId}/servicos", async (ClienteService clienteService, int clienteId, ServicoService servicoService) =>
+{
+    // Verifique se o cliente existe
+    var cliente = await clienteService.GetClienteByIdAsync(clienteId);
+    if (cliente == null)
+    {
+        return Results.NotFound($"Cliente with ID {clienteId} not found.");
+    }
+
+    // Obtenha todos os serviços contratados pelo cliente
+    var servicosContratados = await servicoService.GetServicosContratadosPorClienteAsync(clienteId);
+    return Results.Ok(servicosContratados);
 });
 
 // Endpoints de Produtos
